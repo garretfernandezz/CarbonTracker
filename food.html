@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Food Consumption - Carbon Footprint Calculator</title>
+    <link rel="stylesheet" href="css/food.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Food Consumption</h2>
+      <form id="foodForm" method="POST" action="http://localhost:5001/api/food">
+        <!-- Date Input -->
+        <div class="form-group">
+          <label for="consumptionDate">Date of Consumption:</label>
+          <input
+            type="date"
+            id="consumptionDate"
+            class="form-control"
+            name="consumptionDate"
+            required
+          />
+        </div>
+
+        <!-- Diet Type -->
+        <div class="form-group">
+          <label for="dietType">Diet Type:</label>
+          <select id="dietType" class="form-control" name="dietType" required>
+            <option value="">Select Diet Type</option>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="vegan">Vegan</option>
+            <option value="omnivore">Omnivore (Mixed Diet)</option>
+            <option value="meatHeavy">Meat-Heavy</option>
+          </select>
+        </div>
+
+        <!-- Meat Consumption -->
+        <div class="form-group">
+          <label for="meatConsumption">Daily Meat Consumption:</label>
+          <select
+            id="meatConsumption"
+            class="form-control"
+            name="meatConsumption"
+          >
+            <option value="none">No Meat</option>
+            <option value="low">Low (1-2 servings)</option>
+            <option value="moderate">Moderate (3-4 servings)</option>
+            <option value="high">High (5+ servings)</option>
+          </select>
+        </div>
+
+        <!-- Dairy Consumption -->
+        <div class="form-group">
+          <label for="dairyConsumption"
+            >Dairy Consumption (Servings/Day):</label
+          >
+          <input
+            type="number"
+            id="dairyConsumption"
+            class="form-control"
+            name="dairyConsumption"
+            min="0"
+            placeholder="Enter number of servings"
+            required
+          />
+        </div>
+
+        <!-- Egg Consumption -->
+        <div class="form-group">
+          <label for="eggConsumption">Egg Consumption (Per Day):</label>
+          <input
+            type="number"
+            id="eggConsumption"
+            class="form-control"
+            name="eggConsumption"
+            min="0"
+            placeholder="Enter number of eggs"
+            required
+          />
+        </div>
+
+        <!-- Processed Food Consumption -->
+        <div class="form-group">
+          <label for="processedFood">Processed Food Consumption:</label>
+          <select id="processedFood" class="form-control" name="processedFood">
+            <option value="rarely">Rarely</option>
+            <option value="sometimes">Sometimes</option>
+            <option value="often">Often</option>
+          </select>
+        </div>
+
+        <!-- Locally Sourced Food -->
+        <div class="form-group">
+          <label for="localFood">Locally Sourced Food Percentage:</label>
+          <select id="localFood" class="form-control" name="localFood">
+            <option value="0-25">0-25%</option>
+            <option value="26-50">26-50%</option>
+            <option value="51-75">51-75%</option>
+            <option value="76-100">76-100%</option>
+          </select>
+        </div>
+
+        <!-- Grains and Vegetables -->
+        <div class="form-group">
+          <label for="grainConsumption"
+            >Grain Consumption (Servings/Day):</label
+          >
+          <input
+            type="number"
+            id="grainConsumption"
+            class="form-control"
+            name="grainConsumption"
+            min="0"
+            placeholder="Enter number of servings"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="vegConsumption"
+            >Vegetable Consumption (Servings/Day):</label
+          >
+          <input
+            type="number"
+            id="vegConsumption"
+            class="form-control"
+            name="vegConsumption"
+            min="0"
+            placeholder="Enter number of servings"
+            required
+          />
+        </div>
+
+        <!-- Beverage Consumption -->
+        <div class="form-group">
+          <label for="beverageConsumption">Beverage Consumption:</label>
+          <input
+            type="number"
+            id="beverageConsumption"
+            class="form-control"
+            name="beverageConsumption"
+            min="0"
+            placeholder="Enter number of beverages (Coffee/Tea/Soda)"
+            required
+          />
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      document
+        .getElementById("foodForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent the default form submission
+
+          const formData = new FormData(this);
+          const data = {};
+
+          // Convert FormData to a plain object
+          formData.forEach((value, key) => {
+            data[key] = value;
+          });
+
+          fetch("http://localhost:5001/api/food", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error(
+                  "Network response was not ok " + response.statusText
+                );
+              }
+              return response.json();
+            })
+            .then((data) => {
+              console.log("Success:", data);
+              alert("Data submitted successfully!");
+              // Optionally, reset the form or update the UI
+              this.reset();
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("There was a problem with your submission.");
+            });
+        });
+    </script>
+  </body>
+</html>

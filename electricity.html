@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Electricity Consumption Form</title>
+    <link rel="stylesheet" href="css/electricity.css" />
+    <!-- Update the path as needed -->
+  </head>
+  <body>
+    <div class="container">
+      <h2>Electricity Consumption</h2>
+      <form id="electricityForm" onsubmit="submitForm(event)">
+        <!-- Month and Year Input -->
+        <div class="form-group">
+          <label for="consumptionMonth">Month:</label>
+          <select
+            id="consumptionMonth"
+            class="form-control"
+            name="consumptionMonth"
+            required
+          >
+            <option value="">Select Month</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="consumptionYear">Year:</label>
+          <input
+            type="number"
+            id="consumptionYear"
+            class="form-control"
+            name="consumptionYear"
+            placeholder="Enter Year"
+            min="2000"
+            max="2100"
+            required
+          />
+        </div>
+
+        <!-- Electricity Consumption in kWh -->
+        <div class="form-group">
+          <label for="electricityUsage"
+            >Monthly Electricity Usage (in kWh):</label
+          >
+          <input
+            type="number"
+            id="electricityUsage"
+            class="form-control"
+            name="electricityUsage"
+            placeholder="Enter kWh"
+            required
+          />
+        </div>
+
+        <!-- Source of Electricity -->
+        <div class="form-group">
+          <label for="electricitySource">Source of Electricity:</label>
+          <select
+            id="electricitySource"
+            class="form-control"
+            name="electricitySource"
+            onchange="showPercentageInputs(this)"
+          >
+            <option value="fossilFuels">
+              Fossil Fuels (Coal, Natural Gas, etc.)
+            </option>
+            <option value="renewables">
+              Renewable Energy (Solar, Wind, Hydroelectric)
+            </option>
+            <option value="nuclear">Nuclear Energy</option>
+            <option value="mixed">Mixed (Renewable + Non-renewable)</option>
+          </select>
+        </div>
+
+        <!-- Percentage Breakdown for Mixed Sources (Hidden initially) -->
+        <div id="mixedSourcePercentages" style="display: none">
+          <div class="form-group">
+            <label for="renewablePercentage"
+              >Percentage of Renewable Energy (%):</label
+            >
+            <input
+              type="number"
+              id="renewablePercentage"
+              class="form-control"
+              name="renewablePercentage"
+              placeholder="Enter percentage"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="nonRenewablePercentage"
+              >Percentage of Non-Renewable Energy (%):</label
+            >
+            <input
+              type="number"
+              id="nonRenewablePercentage"
+              class="form-control"
+              name="nonRenewablePercentage"
+              placeholder="Enter percentage"
+            />
+          </div>
+        </div>
+
+        <!-- Energy Efficiency -->
+        <div class="form-group">
+          <label>Do you use energy-efficient appliances?</label>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="energyEfficientAppliances"
+                value="yes"
+              />
+              Yes
+            </label>
+            <label>
+              <input type="radio" name="energyEfficientAppliances" value="no" />
+              No
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label
+            >Have you installed solar panels or other renewable sources at
+            home?</label
+          >
+          <div>
+            <label>
+              <input type="radio" name="solarPanels" value="yes" /> Yes
+            </label>
+            <label>
+              <input type="radio" name="solarPanels" value="no" /> No
+            </label>
+          </div>
+        </div>
+
+        <!-- Heating and Cooling -->
+        <div class="form-group">
+          <label>Do you use electricity for heating or cooling?</label>
+          <div>
+            <label>
+              <input type="radio" name="heatingCooling" value="yes" />
+              Yes
+            </label>
+            <label>
+              <input type="radio" name="heatingCooling" value="no" /> No
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="acUsage"
+            >How often do you use air conditioning/heating?</label
+          >
+          <select id="acUsage" class="form-control" name="acUsage">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="occasionally">Occasionally</option>
+          </select>
+        </div>
+
+        <!-- Appliance Usage -->
+        <div class="form-group">
+          <label for="largeAppliances"
+            >Number of Large Appliances (Fridges, ACs, etc.):</label
+          >
+          <input
+            type="number"
+            id="largeAppliances"
+            class="form-control"
+            name="largeAppliances"
+            placeholder="Enter number"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Do you use electric water heating?</label>
+          <div>
+            <label>
+              <input type="radio" name="electricWaterHeating" value="yes" />
+              Yes
+            </label>
+            <label>
+              <input type="radio" name="electricWaterHeating" value="no" />
+              No
+            </label>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      // Show or hide the percentage input fields based on electricity source
+      function showPercentageInputs(selectElement) {
+        var mixedSourceDiv = document.getElementById("mixedSourcePercentages");
+        if (selectElement.value === "mixed") {
+          mixedSourceDiv.style.display = "block";
+        } else {
+          mixedSourceDiv.style.display = "none";
+        }
+      }
+    </script>
+    <script>
+      // Show or hide the percentage input fields based on electricity source
+      function showPercentageInputs(selectElement) {
+        var mixedSourceDiv = document.getElementById("mixedSourcePercentages");
+        if (selectElement.value === "mixed") {
+          mixedSourceDiv.style.display = "block";
+        } else {
+          mixedSourceDiv.style.display = "none";
+        }
+      }
+
+      // Function to handle form submission
+      async function submitForm(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const form = document.getElementById("electricityForm");
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        // Send the form data to the server
+        try {
+          const response = await fetch(
+            "http://localhost:5001/api/consumption",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            }
+          );
+
+          if (response.ok) {
+            alert("Data submitted successfully!");
+            form.reset(); // Reset form fields
+          } else {
+            alert("Error submitting data. Please try again.");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          alert("Error submitting data. Please try again.");
+        }
+      }
+    </script>
+  </body>
+</html>

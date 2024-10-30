@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transport Inputs</title>
+    <link rel="stylesheet" href="css/forms.css" />
+  </head>
+
+  <body>
+    <div class="container mt-5">
+      <h2>Transport Inputs</h2>
+      <form id="transportForm">
+        <div class="form-group">
+          <label for="transportType">Type of Transport:</label>
+          <select
+            id="transportType"
+            class="form-control"
+            name="transportType"
+            required
+          >
+            <option value="">Select Transport</option>
+            <option value="car">Car</option>
+            <option value="bus">Bus</option>
+            <option value="bike">Bike</option>
+            <option value="train">Train</option>
+            <option value="airplane">Airplane</option>
+            <option value="walk">Walking</option>
+            <option value="electric">Electric</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="distanceTraveled"
+            >Distance Traveled (in km or miles):</label
+          >
+          <input
+            type="number"
+            id="distanceTraveled"
+            class="form-control"
+            name="distanceTraveled"
+            placeholder="Enter distance"
+            required
+          />
+        </div>
+
+        <div class="form-group" id="fuelTypeContainer" style="display: none">
+          <label for="fuelType">Fuel Type:</label>
+          <select id="fuelType" class="form-control" name="fuelType">
+            <option value="">Select Fuel Type</option>
+            <option value="petrol">Petrol</option>
+            <option value="diesel">Diesel</option>
+            <option value="electric">Electric</option>
+            <option value="hybrid">Hybrid</option>
+          </select>
+        </div>
+
+        <div
+          class="form-group"
+          id="fuelEfficiencyContainer"
+          style="display: none"
+        >
+          <label for="fuelEfficiency"
+            >Fuel Efficiency (liters per 100 km or miles per gallon):</label
+          >
+          <input
+            type="number"
+            id="fuelEfficiency"
+            class="form-control"
+            name="fuelEfficiency"
+            placeholder="Enter fuel efficiency"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="dataDate">Select Date:</label>
+          <input
+            type="date"
+            id="dataDate"
+            class="form-control"
+            name="dataDate"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add</button>
+      </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      // Show/hide fields based on transport and fuel type
+      document
+        .getElementById("transportType")
+        .addEventListener("change", function () {
+          const selectedType = this.value;
+          const fuelTypeContainer =
+            document.getElementById("fuelTypeContainer");
+          const fuelEfficiencyContainer = document.getElementById(
+            "fuelEfficiencyContainer"
+          );
+          const fuelEfficiency = document.getElementById("fuelEfficiency");
+
+          if (selectedType === "car" || selectedType === "bus") {
+            fuelTypeContainer.style.display = "block";
+            if (selectedType === "car") {
+              fuelEfficiencyContainer.style.display = "block";
+              fuelEfficiency.required = true;
+            } else {
+              fuelEfficiencyContainer.style.display = "none";
+              fuelEfficiency.required = false;
+            }
+          } else {
+            fuelTypeContainer.style.display = "none";
+            fuelEfficiencyContainer.style.display = "none";
+            fuelEfficiency.required = false;
+          }
+        });
+
+      document
+        .getElementById("fuelType")
+        .addEventListener("change", function () {
+          const selectedFuelType = this.value;
+          const fuelEfficiencyContainer = document.getElementById(
+            "fuelEfficiencyContainer"
+          );
+          const fuelEfficiency = document.getElementById("fuelEfficiency");
+          const transportType = document.getElementById("transportType").value;
+
+          if (transportType === "car" && selectedFuelType === "electric") {
+            fuelEfficiencyContainer.style.display = "none";
+            fuelEfficiency.required = false;
+          } else if (transportType === "car") {
+            fuelEfficiencyContainer.style.display = "block";
+            fuelEfficiency.required = true;
+          }
+        });
+
+      // Submit form and send data to the server
+      document
+        .getElementById("transportForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent default form submission
+
+          const formData = {
+            transportType: document.getElementById("transportType").value,
+            distanceTraveled: parseFloat(
+              document.getElementById("distanceTraveled").value
+            ),
+            fuelType: document.getElementById("fuelType").value || undefined,
+            fuelEfficiency:
+              parseFloat(document.getElementById("fuelEfficiency").value) ||
+              undefined,
+            dataDate: document.getElementById("dataDate").value,
+          };
+
+          console.log("Form Data:", formData); // Debugging: Log the form data
+
+          if (
+            !formData.transportType ||
+            !formData.distanceTraveled ||
+            !formData.dataDate
+          ) {
+            alert("Please fill in all required fields.");
+            return;
+          }
+
+          // Send data to the server
+          fetch("http://localhost:5001/api/transport", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          })
+            .then((response) => {
+              if (response.ok) {
+                alert("Transport data added successfully!");
+                document.getElementById("transportForm").reset(); // Reset the form
+              } else {
+                response.json().then((data) => alert(`Error: ${data.error}`));
+              }
+            })
+            .catch((error) => console.error("Error:", error));
+        });
+    </script>
+  </body>
+</html>

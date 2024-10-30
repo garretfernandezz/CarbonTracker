@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Waste Input Form</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="css/waste.css" />
+    <!-- Link to your CSS file -->
+  </head>
+  <body>
+    <div class="container">
+      <h2>Waste Information</h2>
+      <form>
+        <div class="row">
+          <!-- Waste Inputs -->
+          <div class="col-md-12">
+            <h3>Waste Generation Details</h3>
+            <div class="form-group">
+              <label for="wasteType">Type of Waste:</label>
+              <select
+                id="wasteType"
+                class="form-control"
+                name="wasteType"
+                multiple
+              >
+                <option value="organic">Organic Waste</option>
+                <option value="recyclable">Recyclable Waste</option>
+                <option value="hazardous">Hazardous Waste</option>
+                <option value="general">General Waste</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="wasteWeight">Total Weight of Waste (in kg):</label>
+              <input
+                type="number"
+                id="wasteWeight"
+                class="form-control"
+                name="wasteWeight"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="wasteSource">Source of Waste:</label>
+              <select id="wasteSource" class="form-control" name="wasteSource">
+                <option value="household">Household</option>
+                <option value="workplace">Workplace</option>
+                <option value="event">Event</option>
+                <option value="commercial">Commercial</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Did you recycle any of this waste?</label>
+              <div>
+                <label
+                  ><input type="radio" name="recycleStatus" value="yes" />
+                  Yes</label
+                >
+                <label
+                  ><input type="radio" name="recycleStatus" value="no" />
+                  No</label
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="wasteNotes">Additional Notes:</label>
+              <textarea
+                id="wasteNotes"
+                class="form-control"
+                name="wasteNotes"
+                rows="3"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="dataDate">Select Date:</label>
+              <input
+                type="date"
+                id="dataDate"
+                class="form-control"
+                name="dataDate"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="col-md-12">
+            <button type="submit" class="btn btn-primary btn-block">Add</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      document
+        .querySelector("form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent default form submission
+
+          // Gather data from the form fields
+          const formData = {
+            wasteType: Array.from(
+              document.querySelectorAll("#wasteType option:checked")
+            ).map((option) => option.value),
+            wasteWeight: parseFloat(
+              document.getElementById("wasteWeight").value
+            ),
+            wasteSource: document.getElementById("wasteSource").value,
+            recycleStatus: document.querySelector(
+              'input[name="recycleStatus"]:checked'
+            ).value,
+            wasteNotes:
+              document.getElementById("wasteNotes").value || undefined,
+            dataDate: document.getElementById("dataDate").value,
+          };
+
+          // Send data to the server
+          fetch("http://localhost:5001/api/waste", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          })
+            .then((response) => {
+              if (response.ok) {
+                alert("Waste data added successfully!");
+                document.querySelector("form").reset();
+              } else {
+                response.json().then((data) => alert(`Error: ${data.error}`));
+              }
+            })
+            .catch((error) => console.error("Error:", error));
+        });
+    </script>
+  </body>
+</html>

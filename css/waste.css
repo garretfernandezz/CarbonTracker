@@ -1,0 +1,82 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url("../images/banner-bg.png"); /* Background image path */
+    background-size: cover;
+    background-position: center;
+    color: #fff; /* Text color */
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    background: rgba(0, 0, 0, 0.8); /* Slightly darker semi-transparent black */
+    border-radius: 10px;
+    padding: 40px;
+    margin: 50px auto; /* Center the container */
+    max-width: 600px; /* Set a maximum width */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Add subtle shadow */
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em; /* Increase heading size */
+}
+
+h3 {
+    margin-bottom: 20px; /* Margin below subheading */
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 10px; /* Space below the label */
+    display: block; /* Display labels as block for better spacing */
+}
+
+.form-control {
+    background: rgba(255, 255, 255, 0.9); /* Lighter semi-transparent white for inputs */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 5px;
+    color: #333; /* Dark text for inputs */
+    padding: 10px; /* Add padding for inputs */
+    font-size: 1em; /* Consistent font size */
+    transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transition for focus */
+}
+
+.form-control:focus {
+    border-color: #007bff; /* Blue border on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Blue glow on focus */
+    outline: none; /* Remove default outline */
+}
+
+.btn-primary {
+    background-color: #4caf50; /* Button color */
+    border: none; /* Remove default border */
+    color: white; /* Text color */
+    padding: 12px 20px; /* Padding */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 1em; /* Font size */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s; /* Smooth transition for hover */
+    
+    width: 100%; /* Full-width button */
+}
+
+.btn-primary:hover {
+    background-color: #256627; /* Darker shade on hover */
+}
+
+.btn-primary:focus {
+    outline: none; /* Remove outline on focus */
+}
+
+/* Additional styles for smaller screens */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px; /* Less padding on smaller screens */
+    }
+
+    h2 {
+        font-size: 1.5em; /* Smaller heading size */
+    }
+}

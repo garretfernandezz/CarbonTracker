@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Water Consumption Form</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="css/water.css" />
+    <!-- Link to your CSS file -->
+    <style>
+      /* Hide all form sections by default */
+      .form-section {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Water Consumption Information</h2>
+      <form id="waterForm" onsubmit="submitForm(event)">
+        <div class="row">
+          <div class="col-md-12">
+            <h3>Select Water Consumption Category</h3>
+
+            <!-- Dropdown to select category -->
+            <div class="form-group">
+              <label for="category">Choose a category:</label>
+              <select id="category" class="form-control" required>
+                <option value="">-- Select Category --</option>
+                <option value="showering">Showering</option>
+                <option value="laundry">Laundry</option>
+                <option value="dishwashing">Dishwashing</option>
+                <option value="flushing">Flushing</option>
+                <option value="miscellaneous">Miscellaneous</option>
+              </select>
+            </div>
+
+            <!-- Showering Section -->
+            <div id="showeringSection" class="form-section">
+              <h4>Showering</h4>
+              <div class="form-group">
+                <label for="showerTime">Time of Shower (in minutes):</label>
+                <select id="showerTime" class="form-control" name="showerTime">
+                  <option value="5">Up to 5 minutes</option>
+                  <option value="10">5 - 10 minutes</option>
+                  <option value="15">10 - 15 minutes</option>
+                  <option value="20">15 - 20 minutes</option>
+                  <option value="more">More than 20 minutes</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="numberOfShowers">Number of Showers:</label>
+                <input
+                  type="number"
+                  id="numberOfShowers"
+                  class="form-control"
+                  name="numberOfShowers"
+                  min="0"
+                  placeholder="Enter number of showers"
+                />
+              </div>
+            </div>
+
+            <!-- Laundry Section -->
+            <div id="laundrySection" class="form-section">
+              <h4>Laundry</h4>
+              <div class="form-group">
+                <label for="laundryLoads">Number of Laundry Loads:</label>
+                <input
+                  type="number"
+                  id="laundryLoads"
+                  class="form-control"
+                  name="laundryLoads"
+                  min="0"
+                  placeholder="Enter number of laundry loads"
+                />
+              </div>
+            </div>
+
+            <!-- Dishwashing Section -->
+            <div id="dishwashingSection" class="form-section">
+              <h4>Dishwashing</h4>
+              <div class="form-group">
+                <label for="dishwashingTimes"
+                  >Number of Times Dishwashing:</label
+                >
+                <input
+                  type="number"
+                  id="dishwashingTimes"
+                  class="form-control"
+                  name="dishwashingTimes"
+                  min="0"
+                  placeholder="Enter number of times dishwashing"
+                />
+              </div>
+            </div>
+
+            <!-- Flushing Section -->
+            <div id="flushingSection" class="form-section">
+              <h4>Flushing</h4>
+              <div class="form-group">
+                <label for="flushes">Number of Flushes:</label>
+                <input
+                  type="number"
+                  id="flushes"
+                  class="form-control"
+                  name="flushes"
+                  min="0"
+                  placeholder="Enter number of flushes"
+                />
+              </div>
+            </div>
+
+            <!-- Miscellaneous Section -->
+            <div id="miscellaneousSection" class="form-section">
+              <h4>Miscellaneous Water Usage</h4>
+              <div class="form-group">
+                <label for="miscellaneousAmount"
+                  >Amount of Water Used (in liters):</label
+                >
+                <input
+                  type="number"
+                  id="miscellaneousAmount"
+                  class="form-control"
+                  name="miscellaneousAmount"
+                />
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="col-md-12">
+              <button type="submit" class="btn btn-primary btn-block">
+                Add Water Data
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript to show/hide form sections based on dropdown selection -->
+    <script>
+      document
+        .getElementById("category")
+        .addEventListener("change", function () {
+          // Hide all sections initially
+          document.querySelectorAll(".form-section").forEach((section) => {
+            section.style.display = "none";
+          });
+
+          // Show the selected section
+          const selectedCategory = this.value;
+          if (selectedCategory) {
+            document.getElementById(
+              `${selectedCategory}Section`
+            ).style.display = "block";
+          }
+        });
+    </script>
+    <script>
+      async function submitForm(event) {
+        event.preventDefault();
+
+        // Capture form data based on selected category
+        const category = document.getElementById("category").value;
+        const formData = { category };
+
+        if (category === "showering") {
+          formData.showerTime = parseInt(
+            document.getElementById("showerTime").value
+          );
+          formData.numberOfShowers = parseInt(
+            document.getElementById("numberOfShowers").value
+          );
+        } else if (category === "laundry") {
+          formData.laundryLoads = parseInt(
+            document.getElementById("laundryLoads").value
+          );
+        } else if (category === "dishwashing") {
+          formData.dishwashingTimes = parseInt(
+            document.getElementById("dishwashingTimes").value
+          );
+        } else if (category === "flushing") {
+          formData.flushes = parseInt(document.getElementById("flushes").value);
+        } else if (category === "miscellaneous") {
+          formData.miscellaneousAmount = parseInt(
+            document.getElementById("miscellaneousAmount").value
+          );
+        }
+
+        try {
+          const response = await fetch("http://localhost:5001/api/water", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          });
+
+          if (response.ok) {
+            alert("Water consumption data added successfully!");
+          } else {
+            alert("Error adding data. Please try again.");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+    </script>
+  </body>
+</html>
