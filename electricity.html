@@ -218,27 +218,39 @@
           mixedSourceDiv.style.display = "none";
         }
       }
-    </script>
-    <script>
-      // Show or hide the percentage input fields based on electricity source
-      function showPercentageInputs(selectElement) {
-        var mixedSourceDiv = document.getElementById("mixedSourcePercentages");
-        if (selectElement.value === "mixed") {
-          mixedSourceDiv.style.display = "block";
-        } else {
-          mixedSourceDiv.style.display = "none";
-        }
-      }
 
       // Function to handle form submission
       async function submitForm(event) {
         event.preventDefault(); // Prevent default form submission
 
+        const token = localStorage.getItem("token"); // Retrieve the token from localStorage
         const form = document.getElementById("electricityForm");
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        // Send the form data to the server
+        // Convert the data types accordingly
+        const formattedData = {
+          month: parseInt(data.consumptionMonth),
+          year: parseInt(data.consumptionYear),
+          usage: parseInt(data.electricityUsage),
+          source: data.electricitySource,
+          renewablePercentage: data.renewablePercentage
+            ? parseInt(data.renewablePercentage)
+            : 0,
+          nonRenewablePercentage: data.nonRenewablePercentage
+            ? parseInt(data.nonRenewablePercentage)
+            : 0,
+          energyEfficientAppliances: data.energyEfficientAppliances === "yes",
+          solarPanels: data.solarPanels === "yes",
+          heatingCooling: data.heatingCooling === "yes",
+          acUsage: data.acUsage,
+          largeAppliances: data.largeAppliances
+            ? parseInt(data.largeAppliances)
+            : 0,
+          electricWaterHeating: data.electricWaterHeating === "yes",
+        };
+
+        // Send the formatted data to the server
         try {
           const response = await fetch(
             "http://localhost:5001/api/consumption",
@@ -246,20 +258,22 @@
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
               },
-              body: JSON.stringify(data),
+              body: JSON.stringify(formattedData),
             }
           );
 
-          if (response.ok) {
-            alert("Data submitted successfully!");
-            form.reset(); // Reset form fields
-          } else {
-            alert("Error submitting data. Please try again.");
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
           }
+
+          const responseData = await response.json();
+          alert("Data submitted successfully: " + JSON.stringify(responseData));
+          form.reset(); // Reset the form after successful submission
         } catch (error) {
-          console.error("Error:", error);
-          alert("Error submitting data. Please try again.");
+          console.error("Failed to submit form:", error);
+          alert("Failed to submit form: " + error.message);
         }
       }
     </script>

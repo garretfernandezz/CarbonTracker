@@ -9,9 +9,7 @@
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
     <link rel="stylesheet" href="css/water.css" />
-    <!-- Link to your CSS file -->
     <style>
-      /* Hide all form sections by default */
       .form-section {
         display: none;
       }
@@ -25,7 +23,6 @@
           <div class="col-md-12">
             <h3>Select Water Consumption Category</h3>
 
-            <!-- Dropdown to select category -->
             <div class="form-group">
               <label for="category">Choose a category:</label>
               <select id="category" class="form-control" required>
@@ -142,7 +139,7 @@
       </form>
     </div>
 
-    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -152,67 +149,57 @@
       document
         .getElementById("category")
         .addEventListener("change", function () {
-          // Hide all sections initially
           document.querySelectorAll(".form-section").forEach((section) => {
             section.style.display = "none";
           });
-
-          // Show the selected section
-          const selectedCategory = this.value;
+          const selectedCategory = document.getElementById("category").value;
           if (selectedCategory) {
             document.getElementById(
-              `${selectedCategory}Section`
+              selectedCategory + "Section"
             ).style.display = "block";
           }
         });
-    </script>
-    <script>
+
       async function submitForm(event) {
         event.preventDefault();
 
-        // Capture form data based on selected category
         const category = document.getElementById("category").value;
-        const formData = { category };
-
-        if (category === "showering") {
-          formData.showerTime = parseInt(
-            document.getElementById("showerTime").value
-          );
-          formData.numberOfShowers = parseInt(
-            document.getElementById("numberOfShowers").value
-          );
-        } else if (category === "laundry") {
-          formData.laundryLoads = parseInt(
-            document.getElementById("laundryLoads").value
-          );
-        } else if (category === "dishwashing") {
-          formData.dishwashingTimes = parseInt(
-            document.getElementById("dishwashingTimes").value
-          );
-        } else if (category === "flushing") {
-          formData.flushes = parseInt(document.getElementById("flushes").value);
-        } else if (category === "miscellaneous") {
-          formData.miscellaneousAmount = parseInt(
-            document.getElementById("miscellaneousAmount").value
-          );
-        }
+        const formData = {
+          category,
+          showerTime: document.getElementById("showerTime")?.value || null,
+          numberOfShowers:
+            document.getElementById("numberOfShowers")?.value || null,
+          laundryLoads: document.getElementById("laundryLoads")?.value || null,
+          dishwashingTimes:
+            document.getElementById("dishwashingTimes")?.value || null,
+          flushes: document.getElementById("flushes")?.value || null,
+          miscellaneousAmount:
+            document.getElementById("miscellaneousAmount")?.value || null,
+          date: new Date(),
+        };
 
         try {
+          const token = localStorage.getItem("token");
+
           const response = await fetch("http://localhost:5001/api/water", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(formData),
           });
 
-          if (response.ok) {
-            alert("Water consumption data added successfully!");
-          } else {
-            alert("Error adding data. Please try again.");
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
           }
+
+          const data = await response.json();
+          alert("Data submitted successfully: " + JSON.stringify(data));
+          document.getElementById("waterForm").reset();
         } catch (error) {
-          console.error("Error:", error);
+          console.error("Failed to submit form:", error);
+          alert("Failed to submit form: " + error.message);
         }
       }
     </script>

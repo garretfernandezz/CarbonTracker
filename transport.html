@@ -3,189 +3,252 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Transport Inputs</title>
+    <title>Transport Consumption Form</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
     <link rel="stylesheet" href="css/forms.css" />
+    <style>
+      .form-section {
+        display: none;
+      }
+    </style>
   </head>
-
   <body>
-    <div class="container mt-5">
-      <h2>Transport Inputs</h2>
-      <form id="transportForm">
-        <div class="form-group">
-          <label for="transportType">Type of Transport:</label>
-          <select
-            id="transportType"
-            class="form-control"
-            name="transportType"
-            required
-          >
-            <option value="">Select Transport</option>
-            <option value="car">Car</option>
-            <option value="bus">Bus</option>
-            <option value="bike">Bike</option>
-            <option value="train">Train</option>
-            <option value="airplane">Airplane</option>
-            <option value="walk">Walking</option>
-            <option value="electric">Electric</option>
-          </select>
-        </div>
+    <div class="container">
+      <h2>Transport Consumption Information</h2>
+      <form id="transportForm" onsubmit="submitForm(event)">
+        <div class="row">
+          <div class="col-md-12">
+            <h3>Select Transport Type</h3>
 
-        <div class="form-group">
-          <label for="distanceTraveled"
-            >Distance Traveled (in km or miles):</label
-          >
-          <input
-            type="number"
-            id="distanceTraveled"
-            class="form-control"
-            name="distanceTraveled"
-            placeholder="Enter distance"
-            required
-          />
-        </div>
+            <div class="form-group">
+              <label for="transportType">Choose a transport type:</label>
+              <select id="transportType" class="form-control" required>
+                <option value="">-- Select Transport Type --</option>
+                <option value="car">Car</option>
+                <option value="bus">Bus</option>
+                <option value="bike">Bike</option>
+                <option value="train">Train</option>
+                <option value="walk">Walk</option>
+              </select>
+            </div>
 
-        <div class="form-group" id="fuelTypeContainer" style="display: none">
-          <label for="fuelType">Fuel Type:</label>
-          <select id="fuelType" class="form-control" name="fuelType">
-            <option value="">Select Fuel Type</option>
-            <option value="petrol">Petrol</option>
-            <option value="diesel">Diesel</option>
-            <option value="electric">Electric</option>
-            <option value="hybrid">Hybrid</option>
-          </select>
-        </div>
+            <!-- Car Section -->
+            <div id="carSection" class="form-section">
+              <h4>Car</h4>
+              <div class="form-group">
+                <label for="carDistance">Distance Traveled (in km):</label>
+                <input
+                  type="number"
+                  id="carDistance"
+                  class="form-control"
+                  name="carDistance"
+                  min="0"
+                  placeholder="Enter distance traveled"
+                />
+              </div>
+              <div class="form-group">
+                <label for="carFuelEfficiency"
+                  >Fuel Efficiency (in km/l):</label
+                >
+                <input
+                  type="number"
+                  id="carFuelEfficiency"
+                  class="form-control"
+                  name="carFuelEfficiency"
+                  min="0"
+                  placeholder="Enter fuel efficiency"
+                />
+              </div>
+            </div>
 
-        <div
-          class="form-group"
-          id="fuelEfficiencyContainer"
-          style="display: none"
-        >
-          <label for="fuelEfficiency"
-            >Fuel Efficiency (liters per 100 km or miles per gallon):</label
-          >
-          <input
-            type="number"
-            id="fuelEfficiency"
-            class="form-control"
-            name="fuelEfficiency"
-            placeholder="Enter fuel efficiency"
-          />
-        </div>
+            <!-- Bus Section -->
+            <div id="busSection" class="form-section">
+              <h4>Bus</h4>
+              <div class="form-group">
+                <label for="busDistance">Distance Traveled (in km):</label>
+                <input
+                  type="number"
+                  id="busDistance"
+                  class="form-control"
+                  name="busDistance"
+                  min="0"
+                  placeholder="Enter distance traveled"
+                />
+              </div>
+            </div>
 
-        <div class="form-group">
-          <label for="dataDate">Select Date:</label>
-          <input
-            type="date"
-            id="dataDate"
-            class="form-control"
-            name="dataDate"
-            required
-          />
-        </div>
+            <!-- Bike Section -->
+            <div id="bikeSection" class="form-section">
+              <h4>Bike</h4>
+              <div class="form-group">
+                <label for="bikeDistance">Distance Traveled (in km):</label>
+                <input
+                  type="number"
+                  id="bikeDistance"
+                  class="form-control"
+                  name="bikeDistance"
+                  min="0"
+                  placeholder="Enter distance traveled"
+                />
+              </div>
+            </div>
 
-        <button type="submit" class="btn btn-primary">Add</button>
+            <!-- Train Section -->
+            <div id="trainSection" class="form-section">
+              <h4>Train</h4>
+              <div class="form-group">
+                <label for="trainDistance">Distance Traveled (in km):</label>
+                <input
+                  type="number"
+                  id="trainDistance"
+                  class="form-control"
+                  name="trainDistance"
+                  min="0"
+                  placeholder="Enter distance traveled"
+                />
+              </div>
+            </div>
+
+            <!-- Walk Section -->
+            <div id="walkSection" class="form-section">
+              <h4>Walk</h4>
+              <div class="form-group">
+                <label for="walkDistance">Distance Walked (in km):</label>
+                <input
+                  type="number"
+                  id="walkDistance"
+                  class="form-control"
+                  name="walkDistance"
+                  min="0"
+                  placeholder="Enter distance walked"
+                />
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="col-md-12">
+              <button type="submit" class="btn btn-primary btn-block">
+                Add Transport Data
+              </button>
+            </div>
+          </div>
+        </div>
       </form>
     </div>
 
+    <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    <!-- JavaScript to show/hide form sections based on dropdown selection -->
     <script>
-      // Show/hide fields based on transport and fuel type
       document
         .getElementById("transportType")
         .addEventListener("change", function () {
-          const selectedType = this.value;
-          const fuelTypeContainer =
-            document.getElementById("fuelTypeContainer");
-          const fuelEfficiencyContainer = document.getElementById(
-            "fuelEfficiencyContainer"
-          );
-          const fuelEfficiency = document.getElementById("fuelEfficiency");
-
-          if (selectedType === "car" || selectedType === "bus") {
-            fuelTypeContainer.style.display = "block";
-            if (selectedType === "car") {
-              fuelEfficiencyContainer.style.display = "block";
-              fuelEfficiency.required = true;
-            } else {
-              fuelEfficiencyContainer.style.display = "none";
-              fuelEfficiency.required = false;
-            }
-          } else {
-            fuelTypeContainer.style.display = "none";
-            fuelEfficiencyContainer.style.display = "none";
-            fuelEfficiency.required = false;
+          document.querySelectorAll(".form-section").forEach((section) => {
+            section.style.display = "none";
+          });
+          const selectedTransport =
+            document.getElementById("transportType").value;
+          if (selectedTransport) {
+            document.getElementById(
+              selectedTransport + "Section"
+            ).style.display = "block";
           }
         });
 
-      document
-        .getElementById("fuelType")
-        .addEventListener("change", function () {
-          const selectedFuelType = this.value;
-          const fuelEfficiencyContainer = document.getElementById(
-            "fuelEfficiencyContainer"
-          );
-          const fuelEfficiency = document.getElementById("fuelEfficiency");
-          const transportType = document.getElementById("transportType").value;
+      async function submitForm(event) {
+        event.preventDefault();
 
-          if (transportType === "car" && selectedFuelType === "electric") {
-            fuelEfficiencyContainer.style.display = "none";
-            fuelEfficiency.required = false;
-          } else if (transportType === "car") {
-            fuelEfficiencyContainer.style.display = "block";
-            fuelEfficiency.required = true;
-          }
-        });
+        const transportType = document.getElementById("transportType").value;
 
-      // Submit form and send data to the server
-      document
-        .getElementById("transportForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault(); // Prevent default form submission
+        // Create the formData object conditionally
+        const formData = {
+          transportType,
+          date: new Date(),
+        };
 
-          const formData = {
-            transportType: document.getElementById("transportType").value,
-            distanceTraveled: parseFloat(
-              document.getElementById("distanceTraveled").value
-            ),
-            fuelType: document.getElementById("fuelType").value || undefined,
-            fuelEfficiency:
-              parseFloat(document.getElementById("fuelEfficiency").value) ||
-              undefined,
-            dataDate: document.getElementById("dataDate").value,
-          };
+        // Add relevant data based on selected transport type
+        if (transportType === "car") {
+          formData.carDistance =
+            Number(document.getElementById("carDistance").value) || null;
+          formData.carFuelEfficiency =
+            Number(document.getElementById("carFuelEfficiency").value) || null;
+        } else if (transportType === "bus") {
+          formData.busDistance =
+            Number(document.getElementById("busDistance").value) || null;
+        } else if (transportType === "bike") {
+          formData.bikeDistance =
+            Number(document.getElementById("bikeDistance").value) || null;
+        } else if (transportType === "train") {
+          formData.trainDistance =
+            Number(document.getElementById("trainDistance").value) || null;
+        } else if (transportType === "walk") {
+          formData.walkDistance =
+            Number(document.getElementById("walkDistance").value) || null;
+        }
 
-          console.log("Form Data:", formData); // Debugging: Log the form data
+        // Debugging: log the formData to check the values
+        console.log("Form Data before submission:", formData);
 
-          if (
-            !formData.transportType ||
-            !formData.distanceTraveled ||
-            !formData.dataDate
-          ) {
-            alert("Please fill in all required fields.");
-            return;
-          }
+        // Check for required fields
+        if (
+          transportType === "car" &&
+          (formData.carDistance == null || formData.carFuelEfficiency == null)
+        ) {
+          alert("Please fill in all required fields for Car.");
+          return;
+        }
+        if (transportType === "bus" && formData.busDistance == null) {
+          alert("Please fill in all required fields for Bus.");
+          return;
+        }
+        if (transportType === "bike" && formData.bikeDistance == null) {
+          alert("Please fill in all required fields for Bike.");
+          return;
+        }
+        if (transportType === "train" && formData.trainDistance == null) {
+          alert("Please fill in all required fields for Train.");
+          return;
+        }
+        if (transportType === "walk" && formData.walkDistance == null) {
+          alert("Please fill in all required fields for Walk.");
+          return;
+        }
 
-          // Send data to the server
-          fetch("http://localhost:5001/api/transport", {
+        try {
+          const token = localStorage.getItem("token");
+
+          const response = await fetch("http://localhost:5001/api/transport", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(formData),
-          })
-            .then((response) => {
-              if (response.ok) {
-                alert("Transport data added successfully!");
-                document.getElementById("transportForm").reset(); // Reset the form
-              } else {
-                response.json().then((data) => alert(`Error: ${data.error}`));
-              }
-            })
-            .catch((error) => console.error("Error:", error));
-        });
+          });
+
+          if (!response.ok) {
+            const errorDetails = await response.json(); // Capture detailed error
+            throw new Error(
+              `HTTP error! status: ${response.status}, message: ${
+                errorDetails.message || "No additional info"
+              }`
+            );
+          }
+
+          const data = await response.json();
+          alert("Data submitted successfully: " + JSON.stringify(data));
+          document.getElementById("transportForm").reset();
+        } catch (error) {
+          console.error("Failed to submit form:", error);
+          alert("Failed to submit form: " + error.message);
+        }
+      }
     </script>
   </body>
 </html>
